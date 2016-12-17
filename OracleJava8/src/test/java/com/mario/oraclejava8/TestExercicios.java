@@ -46,15 +46,24 @@ public class TestExercicios {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    
-    
     @Test
     public void testeExercicio1() {
         assertEquals(lesson2.exercise1(), Arrays.asList("the", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog"));
     }
+
     @Test
     public void testeExercicio2() {
         assertEquals(lesson2.exercise2(), Arrays.asList("The", "Quick", "BROWN", "Fox", "The", "DOG"));
+    }
+
+    @Test
+    public void testeExercicio3() {
+        assertEquals(lesson2.exercise3(), "quick-brown-fox");
+    }
+
+    @Test
+    public void testeExercio4() {
+        assertEquals(lesson2.exercise4(), 14);
     }
 
 }

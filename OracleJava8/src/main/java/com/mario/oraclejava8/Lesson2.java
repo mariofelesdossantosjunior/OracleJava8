@@ -10,9 +10,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Speakjava (Simon Ritter)
@@ -49,7 +53,8 @@ public class Lesson2 {
      *
      * Create a new list with all the strings from original list converted to
      * lower case and print them out.
-     * @return 
+     *
+     * @return
      */
     public List<String> exercise1() {
         List<String> list = Arrays.asList(
@@ -82,21 +87,25 @@ public class Lesson2 {
      * Join the second, third and forth strings of the list into a single
      * string, where each word is separated by a hyphen (-). Print the resulting
      * string.
+     *
+     * @return
      */
-    private void exercise3() {
+    public String exercise3() {
         List<String> list = Arrays.asList(
                 "The", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog");
 
-        /* YOUR CODE HERE */
+        return list.stream().skip(1).limit(3).collect(Collectors.joining("-"));
     }
 
     /**
      * Count the number of lines in the file using the BufferedReader provided
      */
-    private void exercise4() throws IOException {
+    public long exercise4() {
         try (BufferedReader reader = Files.newBufferedReader(
                 Paths.get("SonnetI.txt"), StandardCharsets.UTF_8)) {
-            /* YOUR CODE HERE */
+            return reader.lines().count();
+        } catch (IOException ex) {
+            return 0;
         }
     }
 
@@ -106,10 +115,17 @@ public class Lesson2 {
      *
      * HINT: A regular expression, WORD_REGEXP, is already defined for your use.
      */
-    private void exercise5() throws IOException {
+    private List<String> exercise5() {
         try (BufferedReader reader = Files.newBufferedReader(
                 Paths.get("SonnetI.txt"), StandardCharsets.UTF_8)) {
-            /* YOUR CODE HERE */
+            return reader.lines()
+                    .flatMap(line -> Stream.of(line.split(WORD_REGEXP)))
+                    .distinct()
+                    .peek(System.out::println)
+                    .collect(Collectors.toList());
+        } catch (IOException ex) {
+            Logger.getLogger(Lesson2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
@@ -118,20 +134,39 @@ public class Lesson2 {
      * the file, converted to lower-case and with duplicates removed, which is
      * sorted by natural order. Print the contents of the list.
      */
-    private void exercise6() throws IOException {
+    private List<String> exercise6() {
         try (BufferedReader reader = Files.newBufferedReader(
                 Paths.get("SonnetI.txt"), StandardCharsets.UTF_8)) {
-            /* YOUR CODE HERE */
+            return reader.lines()
+                    .flatMap(line -> Stream.of(line.split(WORD_REGEXP)))
+                    .map(String::toLowerCase)
+                    .distinct()
+                    .sorted()
+                    .peek(System.out::println)
+                    .collect(Collectors.toList());
+        } catch (IOException ex) {
+            Logger.getLogger(Lesson2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
     /**
      * Modify exercise6 so that the words are sorted by length
      */
-    private void exercise7() throws IOException {
+    private List<String> exercise7() {
         try (BufferedReader reader = Files.newBufferedReader(
                 Paths.get("SonnetI.txt"), StandardCharsets.UTF_8)) {
+            return reader.lines()
+                    .flatMap(line -> Stream.of(line.split(WORD_REGEXP)))
+                    .map(String::toLowerCase)
+                    .distinct()
+                    .sorted((o1, o2) -> o1.length() - o2.length())
+                    .peek(System.out::println)
+                    .collect(Collectors.toList());
             /* YOUR CODE HERE */
+        } catch (IOException ex) {
+            Logger.getLogger(Lesson2.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
